@@ -1,0 +1,35 @@
+====== R1 CONFIG ======
+
+hostname CSR-R02
+
+ip domain name rotellaengineering.net
+
+aaa new-model
+aaa authentication login default local
+
+interface Loopback1
+  ip address 172.17.1.1 255.255.255.255
+  no shutdown
+
+interface Loopback2
+  ip address 172.18.1.1 255.255.255.255
+  no shutdown
+
+interface GigabitEthernet2
+  ip address 10.10.2.2 255.255.255.252
+  no shutdown
+
+interface GigabitEthernet3
+  ip address 10.10.3.3 255.255.255.252
+  no shutdown
+
+router bgp 65200
+  bgp router-id 192.168.4.201
+  bgp log-neighbor-changes
+  network 172.17.1.1 mask 255.255.255.255
+  network 172.18.1.1 mask 255.255.255.255
+  neighbor 192.168.4.200 remote-as 65201
+  neighbor 192.168.4.200 soft-reconfiguration inbound
+
+line vty 0 4
+  privilege level 15
