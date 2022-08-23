@@ -23,9 +23,13 @@ def main():
         with ConnectHandler(**device) as router:
             try:
                 with open(configfile, 'r') as config:
+                    # Send Configuration File
                     result = router.send_config_set(config)
+                    # Send write memory
                     writememory = router.send_command_timing(writemem)
+                # Wait for BGP to come up
                 sleep(10)
+                # Confirm BGP neighborship
                 showbgp = router.send_command_timing("show ip bgp su")
                 print(showbgp)
             except FileNotFoundError:
